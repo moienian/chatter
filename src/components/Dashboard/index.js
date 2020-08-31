@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -46,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
+  const [textValue, changeTextValue] = useState();
+
   return (
     <div>
       <Paper className={classes.root}>
@@ -95,6 +97,8 @@ export default function Dashboard() {
             type="text"
             variant="outlined"
             size="small"
+            value={textValue}
+            onChange={(e) => changeTextValue(e.target.value)}
           />
           <Button
             className={classes.button}
