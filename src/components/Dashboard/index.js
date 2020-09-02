@@ -48,10 +48,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
 
-  const [state, dispatch] = useContext(chatContext);
-  const topics = Object.keys(state);
+  const { allChats, sendChatAction, user } = useContext(chatContext);
+  const topics = Object.keys(allChats);
 
-  const [textValue, changeTextValue] = useState();
+  const [textValue, changeTextValue] = useState("");
   const [activeTopic, changeactiveTopic] = useState(topics[0]);
 
   return (
@@ -80,17 +80,17 @@ export default function Dashboard() {
             </List>
           </div>
           <div className={classes.chatWindow}>
-            {state[activeTopic].map((message, i) => {
+            {allChats[activeTopic].map((chat, i) => {
               return (
                 <div className={`${classes.flex} ${classes.message}`} key={i}>
                   <Chip
                     avatar={
-                      <Avatar>{message.from.slice(0, 1).toUpperCase()}</Avatar>
+                      <Avatar>{chat.from.slice(0, 1).toUpperCase()}</Avatar>
                     }
-                    label={message.from}
+                    label={chat.from}
                   />
-                  <Typography component="p" className={classes.messageText}>
-                    {message.msg}
+                  <Typography variant="body1" className={classes.messageText}>
+                    {chat.msg}
                   </Typography>
                 </div>
               );
@@ -113,6 +113,14 @@ export default function Dashboard() {
             variant="contained"
             color="primary"
             size="large"
+            onClick={() => {
+              sendChatAction({
+                from: user,
+                msg: textValue,
+                topic: activeTopic,
+              });
+              changeTextValue("");
+            }}
           >
             Send
           </Button>
